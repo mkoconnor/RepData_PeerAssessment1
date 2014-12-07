@@ -73,18 +73,24 @@ Let's make sure the `date` and `interval` columns have no `NA`s:
 list(numNAsInDate=sum(is.na(data$date)),numNAsInInterval=sum(is.na(data$interval)))
 ```
 
-That means that all the `NA`s are in the `steps` column.  Let's fill
-in each `NA` with the mean number of steps from the given day.
+That means that all the `NA`s are in the `steps` column.  Let's make a
+new dataset with each `NA` filled in with the mean number of steps on
+any given day.
 
 ```{r}
+meanPerDay <- tapply(data$steps,data$date,mean,na.rm=TRUE)
+
 fillInNAs <- function(steps,date) {
    if (!is.na(steps)) {
        steps
    } else {
-       stepsPerDay[as.character(date)]
+       meanPerDay[as.character(date)]
    }
 }
-data$steps <- mapply(fillInNAs, data$steps, data$date)
+
+filledInNAs <- data.frame(date=data$date,interval=data$interval,steps=mapply(fillInNAs, data$steps, data$date))
 ```
+
+Now let's see how a histogram of steps per day compares 
 
 ## Are there differences in activity patterns between weekdays and weekends?
