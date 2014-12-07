@@ -9,7 +9,14 @@ output:
 
 ## Loading and preprocessing the data
 
+First we'll load the `activity.csv` data.  I downloaded it to my
+`~/Downloads` directory, so we'll load it from there and then convert
+the `date` column to dates with `as.Date`.
 
+```{r}
+data <- read.csv("~/Downloads/activity.csv")
+data$date <- as.Date(data$date)
+```
 
 ## What is mean total number of steps taken per day?
 
