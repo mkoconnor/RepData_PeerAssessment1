@@ -47,7 +47,7 @@ averagedSteps <- tapply(data$steps,data$interval,mean,na.rm=TRUE)
 
 times <- strptime(sprintf("%04d",as.integer(dimnames(averagedSteps)[[1]])),format="%H%M")
 
-plot(times,averagedSteps,type="l",xlab="Steps",ylab="",main="Steps Averaged Over 5-Minute Intervals",col="blue",lwd=3,tck=1)
+plot(times,averagedSteps,type="l",xlab="",ylab="Steps",main="Steps Averaged Over 5-Minute Intervals",col="blue",lwd=3,tck=1)
 ```
 
 
