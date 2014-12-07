@@ -20,17 +20,24 @@ data$date <- as.Date(data$date)
 
 ## What is mean total number of steps taken per day?
 
-Let's see a histogram of total steps per day (ignoring `NA`s):
+We'd like to look at how many steps were taken over whole days,
+so let's first compute that (ignoring `NA`s).
 
 ```{r}
-with(data,hist(steps,col="red"))
+stepsPerDay <- tapply(data$steps,data$date,sum,na.rm=TRUE)
+```
+
+Now let's see a histogram of total steps per day:
+
+```{r}
+hist(stepsPerDay,xlab="Steps Per Day",main="Histogram of Steps Per Day")
 ```
 
 The mean and median steps per day are as follows (again, ignoring
 `NA`s):
 
 ```{r}
-list(mean=mean(data$steps,na.rm=TRUE),median=median(data$steps,na.rm=TRUE))
+list(mean=mean(stepsPerDay),median=median(stepsPerDay))
 ```
 
 ## What is the average daily activity pattern?
