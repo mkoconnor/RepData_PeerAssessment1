@@ -39,9 +39,15 @@ For the average daily activity pattern, we want to average the number
 of steps over all days for each 5-minute interval, then graph a
 timeseries of that.
 
+The only complication is that for the plot we want now want to convert
+the intervals (which are integers in the format `%H%M`) to regular times.
+
 ```{r}
 averagedSteps <- tapply(data$steps,data$interval,mean,na.rm=TRUE)
-plot(averagedSteps)
+
+times <- strptime(sprintf("%04d",as.integer(dimnames(averagedSteps)[[1]])),format="%H%M")
+
+plot(times,averagedSteps,type="l",xlab="Steps",ylab="",main="Steps Averaged Over 5-Minute Intervals",col="blue",lwd=3,tck=1)
 ```
 
 
