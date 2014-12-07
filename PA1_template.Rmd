@@ -102,3 +102,22 @@ analyzeStepsPerDay(filledInNAs)
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+We'd like now to split the data up based on whether or not it occurred
+on a weekend.  Let's add a column with that data to the `filledInNAs`
+data frame we constructed in the last section.
+
+
+```{r}
+isWeekendOrWeekday <- function (date) {
+    weekday <- weekdays(date)
+    if (weekday == "Monday" || weekday == "Tuesday" || weekday ==
+    "Wednesday" || weekday = "Thursday" || weekday == "Friday") {
+        "weekday"
+    } else {
+        "weekend"
+    }
+}
+
+filledInNAs <- cbind(filledInNAs, list(weekend=sapply(data$date,isWeekendOrWeekday)))
+```
