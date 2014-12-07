@@ -28,8 +28,7 @@ different dataset, we'll first write a function to do this.
 analyzeStepsPerDay <- function(data) {
     stepsPerDay <- tapply(data$steps,data$date,sum,na.rm=TRUE)
     print(list(mean=mean(stepsPerDay),median=median(stepsPerDay)))
-    hist(stepsPerDay,xlab="Steps Per Day",main="Histogram of Steps Per
-    Day")
+    hist(stepsPerDay,xlab="Steps Per Day",main="Histogram of Steps Per Day",col="red")
 }
 ```
 
