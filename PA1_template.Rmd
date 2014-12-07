@@ -41,6 +41,14 @@ list(mean=mean(data$steps,na.rm=TRUE),median=median(data$steps,na.rm=TRUE))
 
 ## What is the average daily activity pattern?
 
+For the average daily activity pattern, we want to average the number
+of steps over all days for each 5-minute interval, then graph a
+timeseries of that.
+
+```{r}
+averagedSteps <- tapply(data$steps,data$interval,mean,na.rm=TRUE)
+plot(averagedSteps)
+```
 
 
 ## Imputing missing values
