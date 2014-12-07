@@ -44,16 +44,22 @@ of steps over all days for each 5-minute interval, then graph a
 timeseries of that.
 
 The only complication is that for the plot we want now want to convert
-the intervals (which are integers in the format `%H%M`) to regular times.
+the intervals (which are integers in the format `%H%M`) to regular
+times.
+
+(We'll again write a function to do this so that we can apply it again
+to different datasets below.)
 
 ```{r}
-averagedSteps <- tapply(data$steps,data$interval,mean,na.rm=TRUE)
+plotAveragedSteps <- function(data,title) {
+    averagedSteps <- tapply(data$steps,data$interval,mean,na.rm=TRUE)
 
-times <- strptime(sprintf("%04d",as.integer(dimnames(averagedSteps)[[1]])),format="%H%M")
+    times <- strptime(sprintf("%04d",as.integer(dimnames(averagedSteps)[[1]])),format="%H%M")
 
-plot(times,averagedSteps,type="l",xlab="",ylab="Steps",main="Steps Averaged Over 5-Minute Intervals",col="blue",lwd=3,tck=1)
+    plot(times,averagedSteps,type="l",xlab="",ylab="Steps",main=title,col="blue",lwd=3,tck=1)
+}
+plotAveragedSteps(data,"Steps Averaged Over 5-Minute Intervals")
 ```
-
 
 ## Imputing missing values
 
@@ -111,8 +117,7 @@ data frame we constructed in the last section.
 ```{r}
 isWeekendOrWeekday <- function (date) {
     weekday <- weekdays(date)
-    if (weekday == "Monday" || weekday == "Tuesday" || weekday ==
-    "Wednesday" || weekday = "Thursday" || weekday == "Friday") {
+    if (weekday == "Monday" || weekday == "Tuesday" || weekday == "Wednesday" || weekday == "Thursday" || weekday == "Friday") {
         "weekday"
     } else {
         "weekend"
@@ -120,4 +125,13 @@ isWeekendOrWeekday <- function (date) {
 }
 
 filledInNAs <- cbind(filledInNAs, list(weekend=sapply(data$date,isWeekendOrWeekday)))
+```
+
+Finally, let's look plot steps by time conditioned on whether or not
+it's a weekend.
+
+```{r}
+par(mfcol=c(2,1))
+plotAveragedSteps(filledInNAs[filledInNAs$weekend == "weekend",],"Steps Averaged Over 5-Minute Intervals (Weekends)")
+plotAveragedSteps(filledInNAs[filledInNAs$weekend == "weekday",],"Steps Averaged Over 5-Minute Intervals (Weekdays)")
 ```
