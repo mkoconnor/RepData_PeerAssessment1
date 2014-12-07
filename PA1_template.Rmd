@@ -60,6 +60,31 @@ plot(times,averagedSteps,type="l",xlab="",ylab="Steps",main="Steps Averaged Over
 
 ## Imputing missing values
 
+Let's see how many rows have `NA`s in them.
 
+```{r}
+numCompleteRows <- sum(complete.cases(data))
+numRowsWithNA <- nrow(data) - numCompleteRows
+numRowsWithNA
+```
+
+Let's make sure the `date` and `interval` columns have no `NA`s:
+```{r}
+list(numNAsInDate=sum(is.na(data$date)),numNAsInInterval=sum(is.na(data$interval)))
+```
+
+That means that all the `NA`s are in the `steps` column.  Let's fill
+in each `NA` with the mean number of steps from the given day.
+
+```{r}
+fillInNAs <- function(steps,date) {
+   if (!is.na(steps)) {
+       steps
+   } else {
+       stepsPerDay[as.character(date)]
+   }
+}
+data$steps <- mapply(fillInNAs, data$steps, data$date)
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
