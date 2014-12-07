@@ -66,6 +66,17 @@ plot(times,averagedSteps,type="l",xlab="",ylab="Steps",main="Steps Averaged Over
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+
+The time interval with the greatest number of steps is given by:
+
+```r
+maxAveragedSteps <- max(averagedSteps)
+format(times[averagedSteps == maxAveragedSteps], "%H:%M")
+```
+
+```
+## [1] "08:35"
+```
 }
 
 ## Imputing missing values
@@ -143,7 +154,7 @@ analyzeStepsPerDay(filledInNAs)
 ## [1] 10766.19
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png) 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -181,4 +192,4 @@ library(lattice)
 xyplot(averagedSteps ~ intervals | weekendOrNot,type="l",layout=c(1,2))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 

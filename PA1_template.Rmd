@@ -55,6 +55,12 @@ times <- strptime(sprintf("%04d",as.integer(dimnames(averagedSteps)[[1]])),forma
 
 plot(times,averagedSteps,type="l",xlab="",ylab="Steps",main="Steps Averaged Over 5-Minute Intervals",col="blue",lwd=3,tck=1)
 ```
+
+The time interval with the greatest number of steps is given by:
+```{r}
+maxAveragedSteps <- max(averagedSteps)
+format(times[averagedSteps == maxAveragedSteps], "%H:%M")
+```
 }
 
 ## Imputing missing values
