@@ -20,24 +20,22 @@ data$date <- as.Date(data$date)
 
 ## What is mean total number of steps taken per day?
 
-We'd like to look at how many steps were taken over whole days,
-so let's first compute that (ignoring `NA`s).
+We'd like to look at a histogram for steps per day, plus the mean and
+median steps per day (ignoring `NA`s).  Since we're going to do this again later with a
+different dataset, we'll first write a function to do this.
 
 ```{r}
-stepsPerDay <- tapply(data$steps,data$date,sum,na.rm=TRUE)
+analyzeStepsPerDay <- function(data) {
+    stepsPerDay <- tapply(data$steps,data$date,sum,na.rm=TRUE)
+    print(list(mean=mean(stepsPerDay),median=median(stepsPerDay)))
+    hist(stepsPerDay,xlab="Steps Per Day",main="Histogram of Steps Per
+    Day")
+}
 ```
 
-Now let's see a histogram of total steps per day:
-
+Now let's run this on the data set we just read in.
 ```{r}
-hist(stepsPerDay,xlab="Steps Per Day",main="Histogram of Steps Per Day")
-```
-
-The mean and median steps per day are as follows (again, ignoring
-`NA`s):
-
-```{r}
-list(mean=mean(stepsPerDay),median=median(stepsPerDay))
+analyzeStepsPerDay(data)
 ```
 
 ## What is the average daily activity pattern?
@@ -75,22 +73,33 @@ list(numNAsInDate=sum(is.na(data$date)),numNAsInInterval=sum(is.na(data$interval
 
 That means that all the `NA`s are in the `steps` column.  Let's make a
 new dataset with each `NA` filled in with the mean number of steps on
-any given day.
+any given interval.
 
 ```{r}
-meanPerDay <- tapply(data$steps,data$date,mean,na.rm=TRUE)
+meanPerInterval <- tapply(data$steps,data$interval,mean,na.rm=TRUE)
 
-fillInNAs <- function(steps,date) {
+fillInNAs <- function(steps,interval) {
    if (!is.na(steps)) {
        steps
    } else {
-       meanPerDay[as.character(date)]
+       meanPerInterval[as.character(interval)]
    }
 }
 
-filledInNAs <- data.frame(date=data$date,interval=data$interval,steps=mapply(fillInNAs, data$steps, data$date))
+filledInNAs <- data.frame(date=data$date,interval=data$interval,steps=mapply(fillInNAs, data$steps, data$interval))
 ```
 
-Now let's see how a histogram of steps per day compares 
+Let's confirm there are no `NA`s in our dataset.
+
+```{r}
+sum(is.na(filledInNAs$steps))
+```
+
+How did the number of steps per day change?  We can find out by
+running our `analyzeStepsPerDay` function on this new dataset.
+
+```{r}
+analyzeStepsPerDay(filledInNAs)
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
