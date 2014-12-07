@@ -10,17 +10,12 @@ output:
 ## Loading and preprocessing the data
 
 First we'll load the `activity.csv` data.  I downloaded it to my
-`~/Downloads` directory, so we'll load it from there and also convert
-the `date` and `interval` columns.
-
-The `date` column can just be converted with `as.Date`.  The
-`interval` column contains times of day (without dates) in the format
-`%H%M`, so it'll be just a little more work to convert that correctly. 
+`~/Downloads` directory, so we'll load it from there and then convert
+the `date` column to dates with `as.Date`.
 
 ```{r}
 data <- read.csv("~/Downloads/activity.csv")
 data$date <- as.Date(data$date)
-data$interval <- strptime(sprintf("%04d",data$interval),format="%H%M")
 ```
 
 ## What is mean total number of steps taken per day?
@@ -37,7 +32,6 @@ The mean and median steps per day are as follows (again, ignoring
 ```{r}
 list(mean=mean(data$steps,na.rm=TRUE),median=median(data$steps,na.rm=TRUE))
 ```
-
 
 ## What is the average daily activity pattern?
 
